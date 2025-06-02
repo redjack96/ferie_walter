@@ -1,0 +1,18 @@
+{
+  "dipendenti": [
+    {
+      "nome": "Walter",
+      "ferie" : [
+        "2025-06-15"
+      ]
+    },
+    {
+      "nome": "Giacomo",
+      "ferie" : []
+    },
+    {
+      "nome": "Luigina",
+      "ferie" : []
+    }
+  ]
+}
