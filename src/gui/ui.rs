@@ -22,9 +22,9 @@ pub struct FerieWalter {
     #[serde(with = "serde_common")]
     dipendenti: Common<Vec<Dipendenti>>,
     #[serde(skip)]
-    add: Common<bool>,
+    add: Common<Option<String>>,
     #[serde(skip)]
-    remove: Common<bool>,
+    remove: Common<Option<String>>,
 }
 
 impl FerieWalter {
@@ -88,6 +88,7 @@ impl eframe::App for FerieWalter {
                 let dip_common = self.dipendenti.clone();
                 for dip in dip_common.read().iter() {
                     griglia = griglia.add_cella_semplice(dip.nome.clone());
+
                     for giorno in 1..=giorni_del_mese {
                         let data_string = format!(
                             "{}-{}-{giorno}",
@@ -98,31 +99,32 @@ impl eframe::App for FerieWalter {
                             "X"
                         } else {
                             ""
-                        }
-                            .to_string();
-
+                        }.to_string();
                         let add_clone = self.add.clone();
                         let remove_clone = self.remove.clone();
+
 
                         griglia = griglia.add_cella(Cella::from_testo(&testo_cella).on_click(
                             move |cella| {
                                 if cella.get_testo(Posizione::Centro).is_empty() {
-                                    add_clone.write(true);
+                                    add_clone.write(Some(data_string.clone()));
                                 } else {
-                                    remove_clone.write(true);
+                                    remove_clone.write(Some(data_string.clone()));
                                 }
                             },
                         ));
 
-                        if self.add.copy() {
-                            dip.add_ferie(data_string.clone());
-                        }
-                        if self.remove.copy() {
-                            dip.remove_ferie(data_string.clone());
-                        }
+                    }
+                    if let Some(string) = self.add.read().as_ref() {
+                        dip.add_ferie(string.clone());
+                    }
+                    if let Some(string) = self.remove.read().as_ref() {
+                        dip.remove_ferie(string.clone());
                     }
 
-                    griglia = griglia.add_cella_semplice("0".into());
+                    let conta_ferie = dip.ferie.read().iter().count();
+
+                    griglia = griglia.add_cella_semplice(conta_ferie.to_string());
                 }
                 ui.add(griglia);
             });
