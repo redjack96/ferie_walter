@@ -1,4 +1,5 @@
-use egui_custom::util::common::serde_common;
+use crate::FILE_JSON;
+use crate::control::comandi::ComandoFerie;
 use crate::control::date::get_giorni_nel_mese;
 use crate::entity::anno::Anno;
 use crate::entity::dipendenti::Dipendente;
@@ -12,8 +13,8 @@ use egui_custom::griglia::posizione::Posizione;
 use egui_custom::prelude::Common;
 use egui_custom::util::comandi::{Backend, Comandi};
 use serde::{Deserialize, Serialize};
+use std::fs;
 use strum::IntoEnumIterator;
-use crate::control::comandi::ComandoFerie;
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct FerieWalter {
@@ -35,14 +36,35 @@ impl eframe::App for FerieWalter {
             );
         });
         egui::CentralPanel::default().show(ctx, |ui| {
-            ComboBox::from_id_salt("anno")
-                .selected_text(RichText::new(self.anno_selezionato.to_string_pretty()).size(32.0))
-                .show_ui(ui, |ui| {
-                    for anno in Anno::iter() {
-                        let anno_string = anno.to_string_pretty();
-                        ui.selectable_value(&mut self.anno_selezionato, anno, anno_string);
+            ui.horizontal(|ui| {
+                ComboBox::from_id_salt("anno")
+                    .selected_text(
+                        RichText::new(self.anno_selezionato.to_string_pretty()).size(32.0),
+                    )
+                    .show_ui(ui, |ui| {
+                        for anno in Anno::iter() {
+                            let anno_string = anno.to_string_pretty();
+                            ui.selectable_value(&mut self.anno_selezionato, anno, anno_string);
+                        }
+                    });
+
+                if ui.button(RichText::new("Carica").size(30.0)).clicked() {
+                    if let Some(contenuto) = fs::read_to_string(FILE_JSON).ok() {
+                        if let Ok(ferie) = serde_json::from_str(&contenuto) {
+                            // Aggiungo i dati letti
+                            *self = ferie;
+                        }
                     }
-                });
+                };
+
+                if ui.button(RichText::new("Salva").size(30.0)).clicked() {
+                    if let Ok(ferie_json) = serde_json::to_string_pretty(&self) {
+                        // Quando clicco Salva, salvo i dati della scheda del giocatore (nella cartella di configurazione)
+                        fs::write(FILE_JSON, ferie_json).ok();
+                    }
+                };
+            });
+
             ui.add_space(10.0);
             ui.horizontal(|ui| {
                 for mese in Mese::iter() {
@@ -85,19 +107,25 @@ impl eframe::App for FerieWalter {
                             "X"
                         } else {
                             ""
-                        }.to_string();
+                        }
+                        .to_string();
                         let comandi = self.comandi.clone();
                         let dip_clone = dip.clone();
                         griglia = griglia.add_cella(Cella::from_testo(&testo_cella).on_click(
                             move |cella| {
                                 if cella.get_testo(Posizione::Centro).is_empty() {
-                                    comandi.read().add(ComandoFerie::AggiungiFerie(data_string.clone(), dip_clone.clone()));
+                                    comandi.read().add(ComandoFerie::AggiungiFerie(
+                                        data_string.clone(),
+                                        dip_clone.clone(),
+                                    ));
                                 } else {
-                                    comandi.read().add(ComandoFerie::RimuoviFerie(data_string.clone(), dip_clone.clone()));
+                                    comandi.read().add(ComandoFerie::RimuoviFerie(
+                                        data_string.clone(),
+                                        dip_clone.clone(),
+                                    ));
                                 }
                             },
                         ));
-
                     }
 
                     self.esegui_tutti(self.comandi.read().work.clone());
