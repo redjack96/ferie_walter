@@ -115,11 +115,15 @@ impl eframe::App for FerieWalter {
                         ));
 
                     }
-                    if let Some(string) = self.add.read().as_ref() {
+                    let stringa = self.add.read().clone();
+                    if let Some(string) = stringa {
                         dip.add_ferie(string.clone());
+                        self.add.write(None);
                     }
-                    if let Some(string) = self.remove.read().as_ref() {
+                    let stringa_remove = self.remove.read().clone();
+                    if let Some(string) = stringa_remove {
                         dip.remove_ferie(string.clone());
+                        self.remove.write(None);
                     }
 
                     let conta_ferie = dip.ferie.read().iter().count();
