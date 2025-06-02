@@ -11,11 +11,11 @@ use crate::entity::mese::Mese;
 /// # Ritorna
 /// * `Some(u32)` con il numero di giorni, oppure `None` se i parametri non sono validi.
 pub fn get_giorni_nel_mese(year: i32, mese: Mese) -> u32 {
-    let mese_corrente = mese.to_index();
+    let mese_corrente = mese.to_ordinal();
 
     // Crea la data del primo giorno del mese successivo
-    let data_prossimo_mese = if mese_corrente == 11 {
-        NaiveDate::from_ymd_opt(year + 1, 0, 1)
+    let data_prossimo_mese = if mese_corrente == 12 {
+        NaiveDate::from_ymd_opt(year + 1, 1, 1)
     } else {
         NaiveDate::from_ymd_opt(year, mese_corrente + 1, 1)
     };

@@ -19,7 +19,7 @@ pub enum Mese {
 
 
 impl Mese {
-    /// Restituisce l'indice del mese partendo da 0, come richiesto da NaiveDate::from_ymd_opt()
+    /// Restituisce l'indice del mese partendo da 0
     pub fn to_index(&self) -> u32 {
         match self {
             Mese::Gennaio => 0,
@@ -37,7 +37,7 @@ impl Mese {
         }
     }
 
-    /// Restituisce il numero del mese partendo da 1
+    /// Restituisce il numero del mese partendo da 1, come richiesto da NaiveDate::from_ymd_opt() (nonostante non venga scritto nella documentazione)
     pub fn to_ordinal(&self) -> u32 {
         match self {
             Mese::Gennaio => 1,
