@@ -1,8 +1,7 @@
-use crate::common::Common;
-use crate::common::serde_common;
+use egui_custom::util::common::serde_common;
 use crate::control::date::get_giorni_nel_mese;
 use crate::entity::anno::Anno;
-use crate::entity::dipendenti::Dipendenti;
+use crate::entity::dipendenti::Dipendente;
 use crate::entity::mese::Mese;
 use eframe::Frame;
 use eframe::epaint::Color32;
@@ -10,8 +9,11 @@ use egui::{Button, ComboBox, Context, RichText};
 use egui_custom::griglia::GrigliaInterattiva;
 use egui_custom::griglia::cella::Cella;
 use egui_custom::griglia::posizione::Posizione;
+use egui_custom::prelude::Common;
+use egui_custom::util::comandi::{Backend, Comandi};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
+use crate::control::comandi::ComandoFerie;
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct FerieWalter {
@@ -19,28 +21,13 @@ pub struct FerieWalter {
     anno_selezionato: Anno,
     #[serde(skip)]
     mese_selezionato: Mese,
-    #[serde(with = "serde_common")]
-    dipendenti: Common<Vec<Dipendenti>>,
+    pub dipendenti: Vec<Dipendente>,
     #[serde(skip)]
-    add: Common<Option<String>>,
-    #[serde(skip)]
-    remove: Common<Option<String>>,
-}
-
-impl FerieWalter {
-    pub fn new(dipendenti: Vec<Dipendenti>) -> Self {
-        Self {
-            anno_selezionato: Default::default(),
-            mese_selezionato: Default::default(),
-            dipendenti: Common::new(dipendenti),
-            add: Default::default(),
-            remove: Default::default(),
-        }
-    }
+    pub comandi: Common<Comandi<ComandoFerie>>,
 }
 
 impl eframe::App for FerieWalter {
-    fn update(&mut self, ctx: &Context, frame: &mut Frame) {
+    fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             ui.label(
                 RichText::new("Gestione Ferie Lavori Pubblici / Manutenzione / Mobilità")
@@ -77,16 +64,15 @@ impl eframe::App for FerieWalter {
                 // recupero i giorni del mese selezionato, per l'anno selezionato, compresi casi eccezionali come gli anni bisestili
                 let giorni_del_mese =
                     get_giorni_nel_mese(self.anno_selezionato.to_i32(), self.mese_selezionato);
-                dbg!(&self.mese_selezionato);
-                dbg!(&self.anno_selezionato);
+
                 let mut griglia = GrigliaInterattiva::new((2 + giorni_del_mese) as usize, vec![]);
                 griglia = griglia.add_cella(Cella::from_testo("Nome"));
                 for i in 1..=giorni_del_mese {
                     griglia = griglia.add_cella(Cella::from_testo(&i.to_string()));
                 }
                 griglia = griglia.add_cella(Cella::from_testo("Tot"));
-                let dip_common = self.dipendenti.clone();
-                for dip in dip_common.read().iter() {
+
+                for dip in self.dipendenti.iter() {
                     griglia = griglia.add_cella_semplice(dip.nome.clone());
 
                     for giorno in 1..=giorni_del_mese {
@@ -100,31 +86,21 @@ impl eframe::App for FerieWalter {
                         } else {
                             ""
                         }.to_string();
-                        let add_clone = self.add.clone();
-                        let remove_clone = self.remove.clone();
-
-
+                        let comandi = self.comandi.clone();
+                        let dip_clone = dip.clone();
                         griglia = griglia.add_cella(Cella::from_testo(&testo_cella).on_click(
                             move |cella| {
                                 if cella.get_testo(Posizione::Centro).is_empty() {
-                                    add_clone.write(Some(data_string.clone()));
+                                    comandi.read().add(ComandoFerie::AggiungiFerie(data_string.clone(), dip_clone.clone()));
                                 } else {
-                                    remove_clone.write(Some(data_string.clone()));
+                                    comandi.read().add(ComandoFerie::RimuoviFerie(data_string.clone(), dip_clone.clone()));
                                 }
                             },
                         ));
 
                     }
-                    let stringa = self.add.read().clone();
-                    if let Some(string) = stringa {
-                        dip.add_ferie(string.clone());
-                        self.add.write(None);
-                    }
-                    let stringa_remove = self.remove.read().clone();
-                    if let Some(string) = stringa_remove {
-                        dip.remove_ferie(string.clone());
-                        self.remove.write(None);
-                    }
+
+                    self.esegui_tutti(self.comandi.read().work.clone());
 
                     let conta_ferie = dip.ferie.read().iter().count();
 

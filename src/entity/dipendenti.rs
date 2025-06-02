@@ -1,15 +1,15 @@
-use crate::common::Common;
-use crate::common::serde_common;
+use egui_custom::util::common::serde_common;
+use egui_custom::prelude::Common;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, Serialize, Deserialize)]
-pub struct Dipendenti {
+pub struct Dipendente {
     pub nome: String,
     #[serde(with = "serde_common")]
     pub ferie: Common<Vec<String>>,
 }
 
-impl Dipendenti {
+impl Dipendente {
     pub fn ferie_in_questa_data(&self, data_input: &str) -> bool {
         self.ferie.read().contains(&data_input.to_string())
     }
