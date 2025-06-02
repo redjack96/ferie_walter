@@ -1,6 +1,7 @@
 mod entity;
 mod gui;
 mod control;
+mod common;
 
 use crate::entity::errori::ErroreApplicazione;
 use crate::gui::ui::FerieWalter;

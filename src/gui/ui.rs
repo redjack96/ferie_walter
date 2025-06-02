@@ -1,3 +1,6 @@
+use crate::common::Common;
+use crate::common::serde_common;
+use crate::control::date::get_giorni_nel_mese;
 use crate::entity::anno::Anno;
 use crate::entity::dipendenti::Dipendenti;
 use crate::entity::mese::Mese;
@@ -9,7 +12,6 @@ use egui_custom::griglia::cella::Cella;
 use egui_custom::griglia::posizione::Posizione;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
-use crate::control::date::get_giorni_nel_mese;
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct FerieWalter {
@@ -17,7 +19,12 @@ pub struct FerieWalter {
     anno_selezionato: Anno,
     #[serde(skip)]
     mese_selezionato: Mese,
-    dipendenti: Vec<Dipendenti>,
+    #[serde(with = "serde_common")]
+    dipendenti: Common<Vec<Dipendenti>>,
+    #[serde(skip)]
+    add: Common<bool>,
+    #[serde(skip)]
+    remove: Common<bool>,
 }
 
 impl FerieWalter {
@@ -25,7 +32,9 @@ impl FerieWalter {
         Self {
             anno_selezionato: Default::default(),
             mese_selezionato: Default::default(),
-            dipendenti,
+            dipendenti: Common::new(dipendenti),
+            add: Default::default(),
+            remove: Default::default(),
         }
     }
 }
@@ -66,7 +75,8 @@ impl eframe::App for FerieWalter {
 
             ui.allocate_ui(ui.available_size(), |ui| {
                 // recupero i giorni del mese selezionato, per l'anno selezionato, compresi casi eccezionali come gli anni bisestili
-                let giorni_del_mese = get_giorni_nel_mese(self.anno_selezionato.to_i32(), self.mese_selezionato);
+                let giorni_del_mese =
+                    get_giorni_nel_mese(self.anno_selezionato.to_i32(), self.mese_selezionato);
                 dbg!(&self.mese_selezionato);
                 dbg!(&self.anno_selezionato);
                 let mut griglia = GrigliaInterattiva::new((2 + giorni_del_mese) as usize, vec![]);
@@ -75,18 +85,41 @@ impl eframe::App for FerieWalter {
                     griglia = griglia.add_cella(Cella::from_testo(&i.to_string()));
                 }
                 griglia = griglia.add_cella(Cella::from_testo("Tot"));
-                for dip in self.dipendenti.iter() {
+                let dip_common = self.dipendenti.clone();
+                for dip in dip_common.read().iter() {
                     griglia = griglia.add_cella_semplice(dip.nome.clone());
-                    for i in 1..=giorni_del_mese {
-                        griglia = griglia
-                            .add_cella(Cella::from_testo("").on_click(|cella| {
-                                if cella.get_testo(Posizione::Centro).is_empty() {
-                                    cella.set_testo("X".into(), Posizione::Centro);
-                                } else {
-                                    cella.set_testo("".into(), Posizione::Centro);
-                                }
+                    for giorno in 1..=giorni_del_mese {
+                        let data_string = format!(
+                            "{}-{}-{giorno}",
+                            self.anno_selezionato.to_i32(),
+                            self.mese_selezionato.to_string_pretty()
+                        );
+                        let testo_cella = if dip.ferie_in_questa_data(&data_string) {
+                            "X"
+                        } else {
+                            ""
+                        }
+                            .to_string();
 
-                            }));
+                        let add_clone = self.add.clone();
+                        let remove_clone = self.remove.clone();
+
+                        griglia = griglia.add_cella(Cella::from_testo(&testo_cella).on_click(
+                            move |cella| {
+                                if cella.get_testo(Posizione::Centro).is_empty() {
+                                    add_clone.write(true);
+                                } else {
+                                    remove_clone.write(true);
+                                }
+                            },
+                        ));
+
+                        if self.add.copy() {
+                            dip.add_ferie(data_string.clone());
+                        }
+                        if self.remove.copy() {
+                            dip.remove_ferie(data_string.clone());
+                        }
                     }
 
                     griglia = griglia.add_cella_semplice("0".into());

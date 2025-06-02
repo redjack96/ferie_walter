@@ -17,7 +17,6 @@ pub enum Mese {
     Dicembre,
 }
 
-
 impl Mese {
     /// Restituisce l'indice del mese partendo da 0
     pub fn to_index(&self) -> u32 {
@@ -55,6 +54,20 @@ impl Mese {
         }
     }
 
-
-
+    pub fn to_string_pretty(&self) -> String {
+        match self {
+            Mese::Gennaio => "01",
+            Mese::Febbraio => "02",
+            Mese::Marzo => "03",
+            Mese::Aprile => "04",
+            Mese::Maggio => "05",
+            Mese::Giugno => "06",
+            Mese::Luglio => "07",
+            Mese::Agosto => "08",
+            Mese::Settembre => "09",
+            Mese::Ottobre => "10",
+            Mese::Novembre => "11",
+            Mese::Dicembre => "12",
+        }.to_string()
+    }
 }
