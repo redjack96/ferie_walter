@@ -95,7 +95,7 @@ impl eframe::App for FerieWalter {
                 griglia = griglia.add_cella(Cella::from_testo("Tot"));
 
                 for dip in self.dipendenti.iter() {
-                    griglia = griglia.add_cella_semplice(dip.nome.clone());
+                    griglia = griglia.add_cella_semplice(&dip.nome);
 
                     for giorno in 1..=giorni_del_mese {
                         let data_string = format!(
@@ -132,9 +132,9 @@ impl eframe::App for FerieWalter {
 
                     let conta_ferie = dip.ferie.read().iter().count();
 
-                    griglia = griglia.add_cella_semplice(conta_ferie.to_string());
+                    griglia = griglia.add_cella_semplice(&conta_ferie.to_string());
                 }
-                ui.add(griglia);
+                griglia.show(ui);
             });
         });
     }
