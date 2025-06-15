@@ -43,15 +43,28 @@ use std::fs; // File system per lettura/scrittura file JSON
 use chrono::{NaiveDate, Datelike, Weekday}; // Manipolazione date e giorni settimana
 use strum::IntoEnumIterator; // Iteratore per enum (Anno, Mese)
 
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct FerieWalter {
    #[serde(skip)]
    anno_selezionato: Anno, // Anno corrente selezionato, non serializzato nel JSON
    #[serde(skip)]
    mese_selezionato: Mese, // Mese corrente selezionato, non serializzato nel JSON
    pub dipendenti: Vec<Dipendente>, // Lista di dipendenti gestiti
+   pub festivita:Vec<String>,
    #[serde(skip)]
    pub comandi: Common<Comandi<ComandoFerie>>, // Gestione comandi per undo/redo, non serializzata
+}
+
+impl Default for FerieWalter {
+   fn default() -> Self {
+      Self{
+         anno_selezionato: Default::default(),
+         mese_selezionato: Default::default(),
+         dipendenti: vec![],
+         festivita: vec!["2025-01-1".to_string()],
+         comandi: Default::default(),
+      }
+   }
 }
 
 impl eframe::App for FerieWalter {
@@ -223,7 +236,7 @@ impl eframe::App for FerieWalter {
 
                   // MODIFICA PER GESTIONE SABATO E DOMENICA CLICCABILI:
                   // Se il giorno è Sabato o Domenica, la cella diventa cliccabile con un comportamento specifico
-                  if matches!(giorno_settimana, Weekday::Sat | Weekday::Sun) {
+                  if matches!(giorno_settimana, Weekday::Sat | Weekday::Sun) || self.festivita.contains(&data_string_clone){
                      // Imposto l'evento on_click sulla cella per rimuovere ferie solo se la cella non è vuota
                      cella = cella.on_click(move |cella| {
                         if !cella.get_testo(Posizione::Centro).is_empty() {

@@ -18,6 +18,7 @@ fn main() -> Result<(), ErroreApplicazione> {
         ..Default::default()
     };
 
+    //LEGGE IL FILE JSON SE ESISTE = lo deserializza nell'oggetto di rust FerieWalter
     let dati_app = if let Some(contenuto) = fs::read_to_string(FILE_JSON).ok() {
         if let Ok(dati_app) = serde_json::from_str::<FerieWalter>(&contenuto) {
             // Aggiungo il giocatore letto dal file corrispondente
@@ -26,7 +27,8 @@ fn main() -> Result<(), ErroreApplicazione> {
             return Err(ErroreApplicazione::ImpossibileLeggereFileJson);
         }
     } else {
-        return Err(ErroreApplicazione::ImpossibileTrovareFile);
+        //SE NON ESISTE IL JSON = restituisce un oggetto FerieWalter di default
+        Ok(FerieWalter::default())
     }?;
 
     eframe::run_native(
