@@ -146,23 +146,11 @@ impl eframe::App for FerieWalter {
             // Inizializza la griglia con righe pari a (giorni mese + intestazioni)
             let mut griglia = GrigliaInterattiva::new((2 + giorni_del_mese) as usize, vec![]);
 
-            // Intestazione colonna "Nome" per i dipendenti
-            griglia = griglia.add_cella(Cella::from_testo("Nome"));
-
-            // Intestazioni con i numeri dei giorni del mese
-            for i in 1..=giorni_del_mese {
-               griglia = griglia.add_cella(Cella::from_testo(&i.to_string()));
-            }
-
-            // Intestazione colonna "Tot" per il totale ferie
-            griglia = griglia.add_cella(Cella::from_testo("Tot"));
-
-            // Riga di separazione vuota sotto intestazioni
-            griglia = griglia.add_cella(Cella::from_testo(""));
-
             // Array di abbreviazioni dei giorni della settimana (lun-dom)
-            let abbreviazioni = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+            let abbreviazioni = ["Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do"];
 
+
+            let mut vett_header_giorni = vec!["Nome".to_string()];
             // Intestazione con il giorno della settimana corrispondente a ciascun giorno
             for giorno in 1..=giorni_del_mese {
                let data_string = format!(
@@ -179,12 +167,13 @@ impl eframe::App for FerieWalter {
 
                let idx = giorno_settimana.num_days_from_monday() as usize;
                let testo_giorno = abbreviazioni[idx];
-
-               griglia = griglia.add_cella(Cella::from_testo(testo_giorno));
+               vett_header_giorni.push(format!("{testo_giorno}\n{giorno}"));
             }
+            vett_header_giorni.push("Tot".to_string());
+            griglia = griglia.header(vett_header_giorni);
 
             // Riga di separazione vuota dopo giorni settimana
-            griglia = griglia.add_cella(Cella::from_testo(""));
+            // griglia = griglia.add_cella(Cella::from_testo(""));
 
             // Per ogni dipendente aggiunge una riga con il nome e i giorni
             for dip in self.dipendenti.iter() {
@@ -221,8 +210,7 @@ impl eframe::App for FerieWalter {
                      "X"
                   } else {
                      ""
-                  }
-                     .to_string();
+                  }.to_string();
 
                   // 3. LOGICA DI GESTIONE COMANDI
 
