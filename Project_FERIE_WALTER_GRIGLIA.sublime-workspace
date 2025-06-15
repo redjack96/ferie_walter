@@ -1,0 +1,417 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"w",
+				"white3"
+			],
+			[
+				"whi",
+				"white2"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"previe",
+				"MarkdownLivePreview: Open Preview"
+			],
+			[
+				"pref",
+				"Preferences: Settings"
+			],
+			[
+				"Markdown preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"previ",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"MarkdownPreview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"mar",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"ma",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: REMO",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"terminal",
+				"Preferences: Terminality Key Bindings – Default"
+			],
+			[
+				"TERMINAL",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"OPEN",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"open",
+				"Terminus: Open Default Shell in Panel"
+			],
+			[
+				"TER",
+				"Terminal: Open"
+			],
+			[
+				"",
+				"Build: New Build System"
+			],
+			[
+				"prv",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package ",
+				"Install Package Control"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 231.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": true
+	},
+	"expanded_folders":
+	[
+		"/C/GESTIONI/GESTIONE_LLPP/Progetto_RUST_ferie_walter/ferie_walter"
+	],
+	"file_history":
+	[
+		"/C/GESTIONI/GESTIONE_LLPP/Progetto_RUST_ferie_walter/ferie_walter/README.MD",
+		"/C/GESTIONI/GESTIONE_LLPP/Progetto_html_ferie/Project_FERIE_SETTORE_LLPP.sublime-workspace",
+		"/C/GESTIONI/GESTIONE_LLPP/Progetto_html_ferie/Project_FERIE_SETTORE_LLPP.sublime-project",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSys_GE_FILE/README.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSys_GE_FILE/CHATGBT.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSys_DF01/PROVA2.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSys_DF01/README.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSys_DF01/prova.md",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/User/Tabella Collassabile2",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSys_DF01/collassabile.md",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/README.MD",
+		"/C/Users/icivi/Downloads/ExportData.json",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/OLD.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/TMP_IMPORTA_MODULI/MSysObjects_Qry01_01_GROUP_OGGETTI.xml",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/Terminality/Terminality.sublime-settings",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/Terminality/README.md",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/Terminality/Default.sublime-keymap",
+		"/C/Users/icivi/AppData/Roaming/Sublime Text/Packages/User/Terminality.sublime-settings",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/OLD.MD",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/IMPOSTAZIONI_SUBLIMETXT/Mariana.sublime-color-scheme",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/POCKET_OPTION_Project.sublime-project",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/IMPOSTAZIONI_SUBLIMETXT/Packages.MD",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/COPY_Sublime-settings.bat",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/COPY_Sublime-settings.bat",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/git_STATUS+ADD+COMMIT+PUSH.BAT",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/IMPOSTAZIONI_SUBLIMETXT/PAKAGE.MD",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/git_PULL.BAT",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/git_STATUS.BAT",
+		"/c/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/git_OpenGitHub.bat",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/IMPEGNI/README.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/README.md",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/POCKET_OPTION_Project.sublime-project",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/README.MD",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/POCKET_OPTION/PRELIEVO_IN_BTC.pdf",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/FINECO/FINECO_TUTORIAL/TUTORIAL.MD",
+		"/C/CASA/GE_CASA/GE_MARINO/BANCA/FINECO/FINECO_TUTORIAL/README.MD",
+		"/F/CASA/GE_CASA/GE_MARINO/BANCA/FINECO/FINECO_TUTORIAL/2022_05_22_CRIPTOVALUTE.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MSYS_README.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MY_TUTORIAL_LATEX.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0501_QUERY/MSys_TB0502Qry01_02_VISUAL_PAG_SEMPLICE_Insert_TMP.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0501_QUERY/MSys_TB0502Qry01_02_VISUAL_PAG_SEMPLICE_Delete_TMP.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0501_QUERY/MSys_TB0502Qry01_01_VISUAL_PAG_SEMPLICE.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0501_QUERY/MSys_TB0501Qry01_01_GE_TabContr_SEMPLICE_TMP_Delete.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0501_QUERY/MSys_TB0501Qry01_01_GE_TabContr_SEMPLICE_Insert_toTMP.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0501_QUERY/MSys_TB0501Qry01_01_GE_TabContr_SEMPLICE.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0401_QUERY/MSys_TB0402Qry01_01_VISUAL_PAG_MASTER.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0401_QUERY/MSys_TB0401Qry01_01_GE_TabContr_MASTER.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MDB/MSYS_N01_OGGETTI.mdb",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TUTTI_TB01Qry01_01_FORM_MASTER_GE_PAGINE.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0401_QUERY/MSys_TB0402Qry01_02_VISUAL_PAG_MASTER_Insert_TMP.m",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/FORM/MSys_TB0401_FORM/MSys_TB0401Frm01_01_GE_TabContr_MASTER.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/FORM/AA_MSys_FORM_M01_GESTIONE_OGGETTI_MASTER.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/FORM/MSys_TB0401_FORM/MSys_TB0402Frm01_01_VISUAL_PAG_MASTER.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TB0401/MSys_TB0401Qry01_01_GE_TabContr_MASTER.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/MSys_TUTTI_TB01Qry01_02_FORM_MASTER_VISUAL_PAGINE.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_DB_EST.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/TABELLE/Msys_ESPORTA_ELENCO_OGGETTI_DB.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI_Form.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI_Table.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI_Report.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI_Query.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI_Moduli.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/QUERY/Msys_Qry01_01_ESPORTA_OGGETTI_Macro.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/TABELLE/Msys_ESPORTA_DB_EST.MD",
+		"/F/CASA/LINGUAGGI/LINGUAGGI_2023_09_22/SUBLIMETEXT/ANALISI/SUBLIMETEXT_DOCUMENTAZIONE_DELLA_COMUNITA.MD",
+		"/C/CASA/LINGUAGGI/DOS/DOS_PROGETTI/DOS_PROGETTI.MD",
+		"/C/CASA/LINGUAGGI/DOS/README.md",
+		"/C/CASA/LINGUAGGI/DOS/UTILITA_FILE.MD",
+		"/C/Users/Giacomo/AppData/Local/Temp/_tc/DOS/UTILITA_FILE.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/FORM/Form_UTILITA_Msys_Frm21_IMPORTA_OGGETTI.cls",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/TABELLE/MSys_TABELLE_LINK.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/Project_MSYS_N01_OGGETTI.sublime-project",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/AA________________________________________________________________________AA.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/AA.TXT",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/ZZ________________________________________________________________________ZZ.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/OBJECT/FORM/IMPORTA_OGGETTI_TREEVIEW.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MSYS/MSys_TABELLE_LINK.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/ANALISI/OBJECT/SYS_N01_TABELLE_Analisi_progetto.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/CMB/CMB.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MDB/MENU/MENU_ANALISI.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/Zip_N70_ElencoFile.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/ANALISI/Zip_N70_ElencoFile.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/ReadMe.md",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/ANALISI/OBJECT/FORM/EVENTO_CONTROLLO_A_SCHEDE.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/FORM_VARIE/MDB/FILE_TXT_IMPORTA/UTILITA_Mdl30_N01_Crea_File_schema_ini.bas",
+		"/C/CASA/LINGUAGGI/ACCESS/MODELLI_ROUTINE_CLASSI/OGGETTI_Mdl01_FOR_EACH_TutteLeForm_TuttiIControlliForm.bas",
+		"/C/CASA/LINGUAGGI/ACCESS/PROGETTI_MDB/MSYS_OGGETTI/MDB/MENU/MENU_GESTIONE.ldb",
+		"/C/CASA/LINGUAGGI/ACCESS/ZIP_7ZIP_INCREMENTALE_FILE_UNICO_(CRIPTA+DECODIFICA_INTERNO).BAT",
+		"/C/CASA/LINGUAGGI/ACCESS/.gitignore",
+		"/C/CASA/LINGUAGGI/ACCESS/Zip_N70_CRIPTA.bat",
+		"/C/CASA/LINGUAGGI/ACCESS/Zip_N70_DECODIFICA.bat",
+		"/C/CASA/LINGUAGGI/ACCESS/Zip_N70_ElencoFileESCLUSI.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/APRI_FILE.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/GE_ACCESS_MembriOggettoApplication.txt",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/RECORDSET.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/SERVIZI/GESTIONE_PROGETTO.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/PROVA.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/GUIDA_RIFERIMENTO_MODELLO_OGGETTO_MICROSOFT_SYSTEM.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/TAB_CONTROL/Project_TAB_CONTROLL/TAB_CONTROLL_PagineASchede.md",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/TAB_CONTROL/Project_TAB_CONTROLL/CONTR_TB01_OGGETTI.md",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/TAB_CONTROL/Project_TAB_CONTROLL/PROGETTO_TAB_CONTROLL.md",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/GUIDA_DI_RIFERIMENTO_OGGETTI_ACCESS.MD",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/GUIDA_RIFERIMENTI_MODELLI_DAO.MD",
+		"/C/CASA/PROGRAMMI/SUBLIME_TEXT/Data/Packages/User/PackageResourceViewer.sublime-settings",
+		"/C/CASA/PROGRAMMI/SUBLIME_TEXT/Data/Packages/PackageResourceViewer/PackageResourceViewer.sublime-settings",
+		"/C/CASA/LINGUAGGI/ACCESS/ACCESS_PROGETTI_MDB/GE_ACCESS.sublime-project",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/NUMERI_TELEFONICI_Dipendenti in Servizio.md",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/CIVILIA_GESTIONE/CIVILIA_TEXT_ANALISI/CIVILIA_ANALISI_SUBLIME_TEXT/HELP/Pg_05_Help.MD",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/CIVILIA_GESTIONE/CIVILIA_TEXT_ANALISI/CIVILIA_ANALISI_SUBLIME_TEXT/HELP/HelpLinkCivilia.MD",
+		"/C/TMP/TMP_DA_SISTEMARE/TMP_ZZ_DELIBERE_DA_SISTEMARE/DGC_554_2010.MD",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/CIVILIA_GESTIONE/CIVILIA_TEXT_ANALISI/CIVILIA_ANALISI_SUBLIME_TEXT/HELP/HelpLinkTb5.MD",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/CIVILIA_GESTIONE/CIVILIA_TEXT_ANALISI/CIVILIA_ANALISI_SUBLIME_TEXT/HELP/HelpProgettoSublimeText_TUTTO.MD",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHVI_MDB/LLPP_GESTIONE/LPP_ANALISI/ATTI_TB01_GESTIONE/LLPP_ATTI_GESTIONE_Analisi_provisoria.txt",
+		"/C/CASA/CDM/LeTorri/ASSEMBLEA_STRAORDINARIA_2022_12_16/2022_12_16_MEMO_ASSEMBLEA_STRAORDINARIA.MD",
+		"/J/CASA/CDM/LeTorri/2022/ASSEMBLEA_STRAORDINARIA_2022_12_16/2022_12_16_MEMO_ASSEMBLEA_STRAORDINARIA.MD",
+		"/C/TMP/TMP_oggi/DA_STAMPARE/LAVORI PUBBLICI+AGRICOLTURA+REGIONE LAZIO+STR.MD",
+		"/C/Users/walter.rossi/AppData/Local/Temp/Rar$DI28.332/AA_NOTE_FERIE+PERMESSI+STRAORDINARI_2022_TUTTI.txt",
+		"/Y/LAVORI_PUBBLICI_FINO_AL_30_09_2019/Valter/OPERE_PUBBLICHE/79_NUOVE_OPPORTUNITA/08_RIQUALIFICAZIONE_POTENZIAMENTO_AUDITORIUM_PAOLO_COLAPIETRO/MEMO_30_2022_COLAPIETRO_PROGETTO.MD",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/NUMERI_TELEFONICI_Dipendenti in Servizio.sublime-project",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/NUMERI_TELEFONICI_Dipendenti in Servizio.sublime-workspace",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/NUMERI_TELEFONICI_Dipendenti in Servizio.txt",
+		"/C/CASA/LINGUAGGI/ZIP/RAR/RAR_MANUALE_ITALIANO.TXT",
+		"/C/TMP/TMP_oggi/MEMO_7_2021.MD",
+		"/C/TMP/TMP_oggi/RAR_MANUALE_ITALIANO.TXT",
+		"/C/TMP/TMP_oggi/DA_SISTEMARE/GE_OGGETTI_DB_MDB_(StudioFiltroForEach).mdb",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/MENU_GESTIONE/MENU_GESTIONE_SUBLIME_TEXT_ANALISI/PROJECT_MENU_GESTIONE_SublimeText_Project.sublime-project",
+		"/C/GESTIONI/GESTIONE_LLPP/25_GESTIONE_LLPP/LLPP_ARCHIVI_MDB/MENU_GESTIONE/MENU_GESTIONE_SUBLIME_TEXT_ANALISI/MENU_GESTIONE_SublimeText.txt"
+	],
+	"find":
+	{
+		"height": 27.2
+	},
+	"find_in_files":
+	{
+		"height": 190.4,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"-",
+			"Cmd_FILTER_FILE_PREIMPOSTATO_FILE_PREIMPOSTATO_Click()",
+			"Cmd_FILTER_FILE_PREIMPOSTATO_FILE_PREIMPOSTATO_Click"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": false,
+		"use_buffer2": false,
+		"use_gitignore": false,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.2
+	},
+	"input":
+	{
+		"height": 65.6
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Terminus":
+	{
+		"height": 313.0
+	},
+	"output.exec":
+	{
+		"height": 237.0
+	},
+	"output.find_results":
+	{
+		"height": 316.0,
+		"history":
+		[
+		]
+	},
+	"output.markdown":
+	{
+		"height": 150.399993896
+	},
+	"pinned_build_system": "Packages/MarkdownPreview/Markdown.sublime-build",
+	"project": "Project_FERIE_WALTER_GRIGLIA.sublime-project",
+	"replace":
+	{
+		"height": 51.2
+	},
+	"save_all_on_build": false,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\CASA\\GE_CASA\\BANCA\\Project_FINECO.sublime-workspace"
+			]
+		],
+		"width": 391.2
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 367.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 1
+	}
+}

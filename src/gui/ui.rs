@@ -62,7 +62,7 @@ impl eframe::App for FerieWalter {
       // Pannello superiore con titolo dell'app
       egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
          ui.label(
-            RichText::new("Gestione Ferie Lavori Pubblici / Manutenzione / Mobilità")
+            RichText::new("Gestione Ferie Lavori Pubblici / Manutenzione / Mobilità --> by W.R.")
                .size(25.0),
          );
       });
@@ -109,10 +109,11 @@ impl eframe::App for FerieWalter {
          ui.horizontal(|ui| {
             for mese in Mese::iter() {
                let button = if self.mese_selezionato == mese {
-                  // Evidenzia il mese selezionato con sfondo blu scuro
-                  let testo = RichText::new(mese.as_ref()).strong().size(20.0);
+                  // @CREA@MESE@SELEZIONATO: Evidenzia il mese selezionato con sfondo blu scuro + ANNO CORRENTE
+                  let testo = RichText::new(format!("{} {}",mese.as_ref(), self.anno_selezionato.to_string_pretty() )).strong().size(20.0);
                   Button::new(testo).fill(Color32::DARK_BLUE)
                } else {
+                  //@CREA@MESI = tutti gli altri senza anno
                   let testo = RichText::new(mese.as_ref()).size(20.0);
                   Button::new(testo)
                };
