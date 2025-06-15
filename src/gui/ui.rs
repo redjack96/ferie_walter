@@ -1,8 +1,28 @@
 /*
    file ui.rs
    del PROGETTO FERIE WALTER
+
+   FASI OPERATIVE DEL PROGRAMMA:
+
+   1. INIZIALIZZAZIONE UI:
+      - Importazioni e struttura dati `FerieWalter`.
+
+   2. COSTRUZIONE DELL’INTERFACCIA GRAFICA:
+      - Pannello superiore (titolo app).
+      - Selettore anno, pulsanti Carica/Salva.
+      - Barra mesi.
+      - Griglia ferie con intestazioni, giorni, dipendenti e celle cliccabili.
+
+   3. LOGICA DI GESTIONE COMANDI:
+      - Sistema di comando undo/redo per ferie.
+      - Aggiunta/rimozione ferie con click.
+
+   4. LETTURA/SCRITTURA DA/IN FILE:
+      - Caricamento da JSON.
+      - Salvataggio in JSON.
 */
 
+// 1. INIZIALIZZAZIONE UI
 use crate::FILE_JSON; // Percorso file JSON per salvare/caricare dati
 use crate::control::comandi::ComandoFerie; // Comandi personalizzati per gestione ferie
 use crate::control::date::get_giorni_nel_mese; // Funzione per ottenere numero giorni in un mese
@@ -36,6 +56,9 @@ pub struct FerieWalter {
 
 impl eframe::App for FerieWalter {
    fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
+
+      // 2. COSTRUZIONE DELL’INTERFACCIA GRAFICA
+
       // Pannello superiore con titolo dell'app
       egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
          ui.label(
@@ -46,6 +69,7 @@ impl eframe::App for FerieWalter {
 
       // Pannello centrale con tutto il contenuto principale
       egui::CentralPanel::default().show(ctx, |ui| {
+
          // Riga orizzontale con selettore anno e bottoni Carica/Salva
          ui.horizontal(|ui| {
             ComboBox::from_id_salt("anno")
@@ -59,6 +83,8 @@ impl eframe::App for FerieWalter {
                      ui.selectable_value(&mut self.anno_selezionato, anno, anno_string);
                   }
                });
+
+            // 4. LETTURA/SCRITTURA DA/IN FILE
 
             // Bottone per caricare dati da file JSON
             if ui.button(RichText::new("Carica").size(30.0)).clicked() {
@@ -151,6 +177,7 @@ impl eframe::App for FerieWalter {
                griglia = griglia.add_cella_semplice(&dip.nome);
 
                for giorno in 1..=giorni_del_mese {
+                  // Creo una stringa data nel formato "YYYY-MM-DD" usando anno, mese e giorno corrente
                   let data_string = format!(
                      "{:04}-{:02}-{:02}",
                      self.anno_selezionato.to_i32(),
@@ -158,10 +185,12 @@ impl eframe::App for FerieWalter {
                      giorno
                   );
 
-                  // Parsing data per sicurezza
+                  // Provo a parsare la data dalla stringa nel formato specificato
                   let giorno_settimana_result = NaiveDate::parse_from_str(&data_string, "%Y-%m-%d");
 
+                  // Controllo se il parsing della data è andato a buon fine
                   if giorno_settimana_result.is_err() {
+                     // In caso di errore, stampo un messaggio di errore e salto all'iterazione successiva
                      eprintln!(
                         "ERRORE PARSING DATA '{}': {}",
                         data_string,
@@ -170,43 +199,40 @@ impl eframe::App for FerieWalter {
                      continue;
                   }
 
+                  // Se il parsing è corretto, ricavo il giorno della settimana dalla data
                   let giorno_settimana = giorno_settimana_result.unwrap().weekday();
 
-                  if cfg!(debug_assertions) {
-                     println!("DEBUG: Data: {}, Giorno settimana: {:?}", data_string, giorno_settimana);
-                  }
-
-                  // Testo cella "X" se il dipendente ha ferie in quella data, altrimenti vuoto
+                  // Preparo il testo da mostrare nella cella: se il dipendente è in ferie in questa data, metto "X", altrimenti stringa vuota
                   let testo_cella = if dip.ferie_in_questa_data(&data_string) {
                      "X"
                   } else {
                      ""
-                  }.to_string();
+                  }
+                     .to_string();
 
-                  // Clona variabili per uso nel closure on_click
+                  // 3. LOGICA DI GESTIONE COMANDI
+
+                  // Clono le strutture necessarie per usarle all'interno delle closure (move)
                   let comandi = self.comandi.clone();
                   let dip_clone = dip.clone();
                   let data_string_clone = data_string.clone();
 
+                  // Creo una nuova cella con il testo precedentemente definito
                   let mut cella = Cella::from_testo(testo_cella);
 
                   // MODIFICA PER GESTIONE SABATO E DOMENICA CLICCABILI:
+                  // Se il giorno è Sabato o Domenica, la cella diventa cliccabile con un comportamento specifico
                   if matches!(giorno_settimana, Weekday::Sat | Weekday::Sun) {
-                     // Nei weekend la cella è cliccabile sempre
-                     // Se c'è "X" la rimuovo al click, se è vuota non faccio nulla (rimane vuota)
+                     // Imposto l'evento on_click sulla cella per rimuovere ferie solo se la cella non è vuota
                      cella = cella.on_click(move |cella| {
                         if !cella.get_testo(Posizione::Centro).is_empty() {
-                           // Rimuovo la "X" se presente cliccando
                            comandi.read().add(ComandoFerie::RimuoviFerie(data_string_clone.clone(), dip_clone.clone()));
                         }
-                        // Se vuota non aggiungo "X", cioè rimane vuota
                      });
-
-                     // Facoltativo: evidenzio il weekend con uno sfondo rosso chiaro
+                     // Imposto il colore di sfondo della cella a un rosso chiaro semitrasparente
                      cella = cella.colore_sfondo(Color32::LIGHT_RED.gamma_multiply(0.45));
                   } else {
-                     // Giorni feriali: comportamento normale
-                     // Cliccando su vuoto aggiungo "X", cliccando su "X" la rimuovo
+                     // Per giorni feriali: on_click alterna tra aggiungere o rimuovere ferie a seconda che la cella sia vuota o no
                      cella = cella.on_click(move |cella| {
                         if cella.get_testo(Posizione::Centro).is_empty() {
                            comandi.read().add(ComandoFerie::AggiungiFerie(data_string_clone.clone(), dip_clone.clone()));
@@ -216,14 +242,13 @@ impl eframe::App for FerieWalter {
                      });
                   }
 
-                  // Aggiunge la cella così configurata alla griglia
+                  // Aggiungo la cella creata alla griglia della UI
                   griglia = griglia.add_cella(cella);
                }
 
-               // Applica tutte le modifiche dei comandi accumulati (undo/redo)
+
                self.esegui_tutti(self.comandi.read().work.clone());
 
-               // Conta e mostra il totale ferie del dipendente
                let conta_ferie = dip.ferie.read().iter().count();
                griglia = griglia.add_cella_semplice(&conta_ferie.to_string());
             }
