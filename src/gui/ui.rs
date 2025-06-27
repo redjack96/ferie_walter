@@ -77,7 +77,7 @@ impl eframe::App for FerieWalter {
                 RichText::new(
                     "Gestione Ferie Lavori Pubblici / Manutenzione / Mobilità --> by W.R.",
                 )
-                .size(25.0),
+                    .size(25.0),
             );
         });
 
@@ -128,8 +128,8 @@ impl eframe::App for FerieWalter {
                             mese.as_ref(),
                             self.anno_selezionato.to_string_pretty()
                         ))
-                        .strong()
-                        .size(20.0);
+                            .strong()
+                            .size(20.0);
                         Button::new(testo).fill(Color32::DARK_BLUE)
                     } else {
                         //@CREA@MESI = tutti gli altri senza anno
@@ -143,18 +143,18 @@ impl eframe::App for FerieWalter {
                 }
             });
 
+            ui.add_space(10.0);
+
             // Area di disegno della griglia principale per la gestione ferie
-            ScrollArea::vertical().show(ui, |ui| {
+            ScrollArea::both().show(ui, |ui| {
                 // Calcola numero giorni nel mese selezionato
                 let giorni_del_mese =
                     get_giorni_nel_mese(self.anno_selezionato.to_i32(), self.mese_selezionato);
 
                 // Inizializza la griglia con righe pari a (giorni mese + intestazioni)
-                let mut griglia =
-                    GrigliaInterattiva::new((2 + giorni_del_mese) as usize, 60.0, vec![]);
 
                 // Array di abbreviazioni dei giorni della settimana (lun-dom)
-                let abbreviazioni = ["Lum", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+                let abbreviazioni = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
 
                 let mut vett_header_giorni = vec!["Nome".to_string()];
                 // Intestazione con il giorno della settimana corrispondente a ciascun giorno
@@ -176,7 +176,9 @@ impl eframe::App for FerieWalter {
                     vett_header_giorni.push(format!("{testo_giorno}\n{giorno}"));
                 }
                 vett_header_giorni.push("Tot".to_string());
-                griglia = griglia.header(vett_header_giorni);
+                let mut griglia =
+                    GrigliaInterattiva::new_with_header((2 + giorni_del_mese) as usize, 60.0, vec![], vett_header_giorni);
+
 
                 // Riga di separazione vuota dopo giorni settimana
                 // griglia = griglia.add_cella(Cella::from_testo(""));
@@ -218,7 +220,7 @@ impl eframe::App for FerieWalter {
                         } else {
                             ""
                         }
-                        .to_string();
+                            .to_string();
 
                         // 3. LOGICA DI GESTIONE COMANDI
 
