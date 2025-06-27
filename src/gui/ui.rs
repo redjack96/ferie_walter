@@ -154,7 +154,7 @@ impl eframe::App for FerieWalter {
                     GrigliaInterattiva::new((2 + giorni_del_mese) as usize, 60.0, vec![]);
 
                 // Array di abbreviazioni dei giorni della settimana (lun-dom)
-                let abbreviazioni = ["Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do"];
+                let abbreviazioni = ["Lum", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
 
                 let mut vett_header_giorni = vec!["Nome".to_string()];
                 // Intestazione con il giorno della settimana corrispondente a ciascun giorno
