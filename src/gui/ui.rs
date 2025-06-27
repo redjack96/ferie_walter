@@ -31,7 +31,7 @@ use crate::entity::dipendenti::Dipendente; // Tipo Dipendente
 use crate::entity::mese::Mese; // Tipo Mese personalizzato
 use eframe::Frame; // Frame della GUI
 use eframe::epaint::Color32; // Colori per la UI
-use egui::{Button, ComboBox, Context, RichText, ScrollArea}; // Componenti UI base da egui
+use egui::{Button, ComboBox, Context, RichText}; // Componenti UI base da egui
 use egui_custom::griglia::GrigliaInterattiva; // Griglia interattiva personalizzata
 use egui_custom::griglia::cella::Cella; // Cella della griglia
 use egui_custom::griglia::posizione::Posizione; // Posizione testo nelle celle
@@ -77,7 +77,7 @@ impl eframe::App for FerieWalter {
                 RichText::new(
                     "Gestione Ferie Lavori Pubblici / Manutenzione / Mobilità --> by W.R.",
                 )
-                    .size(25.0),
+                .size(25.0),
             );
         });
 
@@ -128,8 +128,8 @@ impl eframe::App for FerieWalter {
                             mese.as_ref(),
                             self.anno_selezionato.to_string_pretty()
                         ))
-                            .strong()
-                            .size(20.0);
+                        .strong()
+                        .size(20.0);
                         Button::new(testo).fill(Color32::DARK_BLUE)
                     } else {
                         //@CREA@MESI = tutti gli altri senza anno
@@ -146,19 +146,52 @@ impl eframe::App for FerieWalter {
             ui.add_space(10.0);
 
             // Area di disegno della griglia principale per la gestione ferie
-            ScrollArea::both().show(ui, |ui| {
-                // Calcola numero giorni nel mese selezionato
-                let giorni_del_mese =
-                    get_giorni_nel_mese(self.anno_selezionato.to_i32(), self.mese_selezionato);
 
-                // Inizializza la griglia con righe pari a (giorni mese + intestazioni)
+            // Calcola numero giorni nel mese selezionato
+            let giorni_del_mese =
+                get_giorni_nel_mese(self.anno_selezionato.to_i32(), self.mese_selezionato);
 
-                // Array di abbreviazioni dei giorni della settimana (lun-dom)
-                let abbreviazioni = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+            // Inizializza la griglia con righe pari a (giorni mese + intestazioni)
 
-                let mut vett_header_giorni = vec!["Nome".to_string()];
-                // Intestazione con il giorno della settimana corrispondente a ciascun giorno
+            // Array di abbreviazioni dei giorni della settimana (lun-dom)
+            let abbreviazioni = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+
+            let mut vett_header_giorni = vec!["Nome".to_string()];
+            // Intestazione con il giorno della settimana corrispondente a ciascun giorno
+            for giorno in 1..=giorni_del_mese {
+                let data_string = format!(
+                    "{:04}-{:02}-{:02}",
+                    self.anno_selezionato.to_i32(),
+                    self.mese_selezionato.to_ordinal(),
+                    giorno
+                );
+
+                // Parsing data e determinazione giorno della settimana
+                let giorno_settimana = NaiveDate::parse_from_str(&data_string, "%Y-%m-%d")
+                    .map(|d| d.weekday())
+                    .unwrap_or(Weekday::Mon);
+
+                let idx = giorno_settimana.num_days_from_monday() as usize;
+                let testo_giorno = abbreviazioni[idx];
+                vett_header_giorni.push(format!("{testo_giorno}\n{giorno}"));
+            }
+            vett_header_giorni.push("Tot".to_string());
+            let mut griglia = GrigliaInterattiva::new_with_header(
+                (2 + giorni_del_mese) as usize,
+                60.0,
+                vec![],
+                vett_header_giorni,
+            );
+
+            // Riga di separazione vuota dopo giorni settimana
+            // griglia = griglia.add_cella(Cella::from_testo(""));
+
+            // Per ogni dipendente aggiunge una riga con il nome e i giorni
+            for dip in self.dipendenti.iter() {
+                griglia = griglia.add_cella_semplice(&dip.nome);
+
                 for giorno in 1..=giorni_del_mese {
+                    // Creo una stringa data nel formato "YYYY-MM-DD" usando anno, mese e giorno corrente
                     let data_string = format!(
                         "{:04}-{:02}-{:02}",
                         self.anno_selezionato.to_i32(),
@@ -166,118 +199,87 @@ impl eframe::App for FerieWalter {
                         giorno
                     );
 
-                    // Parsing data e determinazione giorno della settimana
-                    let giorno_settimana = NaiveDate::parse_from_str(&data_string, "%Y-%m-%d")
-                        .map(|d| d.weekday())
-                        .unwrap_or(Weekday::Mon);
+                    // Provo a parsare la data dalla stringa nel formato specificato
+                    let giorno_settimana_result =
+                        NaiveDate::parse_from_str(&data_string, "%Y-%m-%d");
 
-                    let idx = giorno_settimana.num_days_from_monday() as usize;
-                    let testo_giorno = abbreviazioni[idx];
-                    vett_header_giorni.push(format!("{testo_giorno}\n{giorno}"));
-                }
-                vett_header_giorni.push("Tot".to_string());
-                let mut griglia =
-                    GrigliaInterattiva::new_with_header((2 + giorni_del_mese) as usize, 60.0, vec![], vett_header_giorni);
-
-
-                // Riga di separazione vuota dopo giorni settimana
-                // griglia = griglia.add_cella(Cella::from_testo(""));
-
-                // Per ogni dipendente aggiunge una riga con il nome e i giorni
-                for dip in self.dipendenti.iter() {
-                    griglia = griglia.add_cella_semplice(&dip.nome);
-
-                    for giorno in 1..=giorni_del_mese {
-                        // Creo una stringa data nel formato "YYYY-MM-DD" usando anno, mese e giorno corrente
-                        let data_string = format!(
-                            "{:04}-{:02}-{:02}",
-                            self.anno_selezionato.to_i32(),
-                            self.mese_selezionato.to_ordinal(),
-                            giorno
+                    // Controllo se il parsing della data è andato a buon fine
+                    if giorno_settimana_result.is_err() {
+                        // In caso di errore, stampo un messaggio di errore e salto all'iterazione successiva
+                        eprintln!(
+                            "ERRORE PARSING DATA '{}': {}",
+                            data_string,
+                            giorno_settimana_result.unwrap_err()
                         );
-
-                        // Provo a parsare la data dalla stringa nel formato specificato
-                        let giorno_settimana_result =
-                            NaiveDate::parse_from_str(&data_string, "%Y-%m-%d");
-
-                        // Controllo se il parsing della data è andato a buon fine
-                        if giorno_settimana_result.is_err() {
-                            // In caso di errore, stampo un messaggio di errore e salto all'iterazione successiva
-                            eprintln!(
-                                "ERRORE PARSING DATA '{}': {}",
-                                data_string,
-                                giorno_settimana_result.unwrap_err()
-                            );
-                            continue;
-                        }
-
-                        // Se il parsing è corretto, ricavo il giorno della settimana dalla data
-                        let giorno_settimana = giorno_settimana_result.unwrap().weekday();
-
-                        // Preparo il testo da mostrare nella cella: se il dipendente è in ferie in questa data, metto "X", altrimenti stringa vuota
-                        let testo_cella = if dip.ferie_in_questa_data(&data_string) {
-                            "X"
-                        } else {
-                            ""
-                        }
-                            .to_string();
-
-                        // 3. LOGICA DI GESTIONE COMANDI
-
-                        // Clono le strutture necessarie per usarle all'interno delle closure (move)
-                        let comandi = self.comandi.clone();
-                        let dip_clone = dip.clone();
-                        let data_string_clone = data_string.clone();
-
-                        // Creo una nuova cella con il testo precedentemente definito
-                        let mut cella = Cella::from_testo(testo_cella);
-
-                        // MODIFICA PER GESTIONE SABATO E DOMENICA CLICCABILI:
-                        // Se il giorno è Sabato o Domenica, la cella diventa cliccabile con un comportamento specifico
-                        if matches!(giorno_settimana, Weekday::Sat | Weekday::Sun)
-                            || self.festivita.contains(&data_string_clone)
-                        {
-                            // Imposto l'evento on_click sulla cella per rimuovere ferie solo se la cella non è vuota
-                            cella = cella.on_click(move |cella| {
-                                if !cella.get_testo(Posizione::Centro).is_empty() {
-                                    comandi.read().add(ComandoFerie::RimuoviFerie(
-                                        data_string_clone.clone(),
-                                        dip_clone.clone(),
-                                    ));
-                                }
-                            });
-                            // Imposto il colore di sfondo della cella a un rosso chiaro semitrasparente
-                            cella = cella.colore_sfondo(Color32::LIGHT_RED.gamma_multiply(0.45));
-                        } else {
-                            // Per giorni feriali: on_click alterna tra aggiungere o rimuovere ferie a seconda che la cella sia vuota o no
-                            cella = cella.on_click(move |cella| {
-                                if cella.get_testo(Posizione::Centro).is_empty() {
-                                    comandi.read().add(ComandoFerie::AggiungiFerie(
-                                        data_string_clone.clone(),
-                                        dip_clone.clone(),
-                                    ));
-                                } else {
-                                    comandi.read().add(ComandoFerie::RimuoviFerie(
-                                        data_string_clone.clone(),
-                                        dip_clone.clone(),
-                                    ));
-                                }
-                            });
-                        }
-
-                        // Aggiungo la cella creata alla griglia della UI
-                        griglia = griglia.add_cella(cella);
+                        continue;
                     }
 
-                    self.esegui_tutti(self.comandi.read().work.clone());
+                    // Se il parsing è corretto, ricavo il giorno della settimana dalla data
+                    let giorno_settimana = giorno_settimana_result.unwrap().weekday();
 
-                    let conta_ferie = dip.ferie.read().iter().count();
-                    griglia = griglia.add_cella_semplice(&conta_ferie.to_string());
+                    // Preparo il testo da mostrare nella cella: se il dipendente è in ferie in questa data, metto "X", altrimenti stringa vuota
+                    let testo_cella = if dip.ferie_in_questa_data(&data_string) {
+                        "X"
+                    } else {
+                        ""
+                    }
+                    .to_string();
+
+                    // 3. LOGICA DI GESTIONE COMANDI
+
+                    // Clono le strutture necessarie per usarle all'interno delle closure (move)
+                    let comandi = self.comandi.clone();
+                    let dip_clone = dip.clone();
+                    let data_string_clone = data_string.clone();
+
+                    // Creo una nuova cella con il testo precedentemente definito
+                    let mut cella = Cella::from_testo(testo_cella);
+
+                    // MODIFICA PER GESTIONE SABATO E DOMENICA CLICCABILI:
+                    // Se il giorno è Sabato o Domenica, la cella diventa cliccabile con un comportamento specifico
+                    if matches!(giorno_settimana, Weekday::Sat | Weekday::Sun)
+                        || self.festivita.contains(&data_string_clone)
+                    {
+                        // Imposto l'evento on_click sulla cella per rimuovere ferie solo se la cella non è vuota
+                        cella = cella.on_click(move |cella| {
+                            if !cella.get_testo(Posizione::Centro).is_empty() {
+                                comandi.read().add(ComandoFerie::RimuoviFerie(
+                                    data_string_clone.clone(),
+                                    dip_clone.clone(),
+                                ));
+                            }
+                        });
+                        // Imposto il colore di sfondo della cella a un rosso chiaro semitrasparente
+                        cella = cella.colore_sfondo(Color32::LIGHT_RED.gamma_multiply(0.45));
+                    } else {
+                        // Per giorni feriali: on_click alterna tra aggiungere o rimuovere ferie a seconda che la cella sia vuota o no
+                        cella = cella.on_click(move |cella| {
+                            if cella.get_testo(Posizione::Centro).is_empty() {
+                                comandi.read().add(ComandoFerie::AggiungiFerie(
+                                    data_string_clone.clone(),
+                                    dip_clone.clone(),
+                                ));
+                            } else {
+                                comandi.read().add(ComandoFerie::RimuoviFerie(
+                                    data_string_clone.clone(),
+                                    dip_clone.clone(),
+                                ));
+                            }
+                        });
+                    }
+
+                    // Aggiungo la cella creata alla griglia della UI
+                    griglia = griglia.add_cella(cella);
                 }
 
-                // Mostra la griglia aggiornata nell'interfaccia utente
-                griglia.show(ui);
-            });
+                self.esegui_tutti(self.comandi.read().work.clone());
+
+                let conta_ferie = dip.ferie.read().iter().count();
+                griglia = griglia.add_cella_semplice(&conta_ferie.to_string());
+            }
+
+            // Mostra la griglia aggiornata nell'interfaccia utente
+            griglia.scrollable().show(ui);
         });
     }
 }
