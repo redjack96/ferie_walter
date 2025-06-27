@@ -156,7 +156,7 @@ impl eframe::App for FerieWalter {
             // Array di abbreviazioni dei giorni della settimana (lun-dom)
             let abbreviazioni = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
 
-            let mut vett_header_giorni = vec!["Nome".to_string()];
+            let mut vett_header_giorni = vec![];
             // Intestazione con il giorno della settimana corrispondente a ciascun giorno
             for giorno in 1..=giorni_del_mese {
                 let data_string = format!(
@@ -177,18 +177,17 @@ impl eframe::App for FerieWalter {
             }
             vett_header_giorni.push("Tot".to_string());
             let mut griglia = GrigliaInterattiva::new_with_header(
-                (2 + giorni_del_mese) as usize,
+                (1 + giorni_del_mese) as usize,
                 60.0,
                 vec![],
                 vett_header_giorni,
-            );
+            ).header_verticale(self.dipendenti.iter().map(|d| d.nome.clone()).collect());
 
             // Riga di separazione vuota dopo giorni settimana
             // griglia = griglia.add_cella(Cella::from_testo(""));
 
             // Per ogni dipendente aggiunge una riga con il nome e i giorni
             for dip in self.dipendenti.iter() {
-                griglia = griglia.add_cella_semplice(&dip.nome);
 
                 for giorno in 1..=giorni_del_mese {
                     // Creo una stringa data nel formato "YYYY-MM-DD" usando anno, mese e giorno corrente
