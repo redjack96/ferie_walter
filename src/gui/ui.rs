@@ -278,7 +278,7 @@ impl eframe::App for FerieWalter {
             }
 
             // Mostra la griglia aggiornata nell'interfaccia utente
-            griglia.scrollable().show(ui);
+            griglia.show(ui);
         });
     }
 }
