@@ -35,8 +35,7 @@ use egui::{Button, ComboBox, Context, RichText}; // Componenti UI base da egui
 use egui_custom::griglia::GrigliaInterattiva; // Griglia interattiva personalizzata
 use egui_custom::griglia::cella::Cella; // Cella della griglia
 use egui_custom::griglia::posizione::Posizione; // Posizione testo nelle celle
-use egui_custom::prelude::Common; // Utility comuni
-use egui_custom::util::comandi::{Backend, Comandi}; // Gestione comandi e undo/redo
+use egui_custom::prelude::{Commands, Common}; // Utility comuni
 use serde::{Deserialize, Serialize}; // Serializzazione/deserializzazione JSON
 use std::fs; // File system per lettura/scrittura file JSON
 // AGGIUNTO PER GESTIONE DATE
@@ -52,7 +51,7 @@ pub struct FerieWalter {
     pub dipendenti: Vec<Dipendente>, // Lista di dipendenti gestiti
     pub festivita: Vec<String>,
     #[serde(skip)]
-    pub comandi: Common<Comandi<ComandoFerie>>, // Gestione comandi per undo/redo, non serializzata
+    pub comandi: Common<Commands>, // Gestione comandi per undo/redo, non serializzata
 }
 
 impl Default for FerieWalter {
@@ -227,7 +226,7 @@ impl eframe::App for FerieWalter {
                     // 3. LOGICA DI GESTIONE COMANDI
 
                     // Clono le strutture necessarie per usarle all'interno delle closure (move)
-                    let comandi = self.comandi.clone();
+                    let mut comandi = self.comandi.clone();
                     let dip_clone = dip.clone();
                     let data_string_clone = data_string.clone();
 
@@ -242,7 +241,7 @@ impl eframe::App for FerieWalter {
                         // Imposto l'evento on_click sulla cella per rimuovere ferie solo se la cella non è vuota
                         cella = cella.on_click(move |cella| {
                             if !cella.get_testo(Posizione::Centro).is_empty() {
-                                comandi.read().add(ComandoFerie::RimuoviFerie(
+                                comandi.get_mut().add(ComandoFerie::RimuoviFerie(
                                     data_string_clone.clone(),
                                     dip_clone.clone(),
                                 ));
@@ -254,12 +253,12 @@ impl eframe::App for FerieWalter {
                         // Per giorni feriali: on_click alterna tra aggiungere o rimuovere ferie a seconda che la cella sia vuota o no
                         cella = cella.on_click(move |cella| {
                             if cella.get_testo(Posizione::Centro).is_empty() {
-                                comandi.read().add(ComandoFerie::AggiungiFerie(
+                                comandi.get_mut().add(ComandoFerie::AggiungiFerie(
                                     data_string_clone.clone(),
                                     dip_clone.clone(),
                                 ));
                             } else {
-                                comandi.read().add(ComandoFerie::RimuoviFerie(
+                                comandi.get_mut().add(ComandoFerie::RimuoviFerie(
                                     data_string_clone.clone(),
                                     dip_clone.clone(),
                                 ));
@@ -270,8 +269,9 @@ impl eframe::App for FerieWalter {
                     // Aggiungo la cella creata alla griglia della UI
                     griglia = griglia.add_cella(cella);
                 }
-
-                self.esegui_tutti(self.comandi.read().work.clone());
+                
+                
+                self.comandi.get_mut().execute_all();
 
                 let conta_ferie = dip.ferie.read().iter().count();
                 griglia = griglia.add_cella_semplice(&conta_ferie.to_string());

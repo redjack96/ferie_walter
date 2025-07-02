@@ -13,11 +13,11 @@ impl Dipendente {
     pub fn ferie_in_questa_data(&self, data_input: &str) -> bool {
         self.ferie.read().contains(&data_input.to_string())
     }
-    pub fn add_ferie(&self, ferie: String) {
+    pub fn add_ferie(&mut self, ferie: String) {
         self.ferie.get_mut().push(ferie);
     }
 
-    pub fn remove_ferie(&self, ferie: String) {
+    pub fn remove_ferie(&mut self, ferie: String) {
         self.ferie.get_mut().retain(|data| data != &ferie);
     }
 }

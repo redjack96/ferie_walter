@@ -17,7 +17,7 @@ pub enum Mese {
     Dicembre,
 }
 
-
+#[allow(unused)]
 impl Mese {
     /// Restituisce l'indice del mese partendo da 0
     pub fn to_index(&self) -> u32 {
