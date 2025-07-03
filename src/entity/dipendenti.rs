@@ -1,12 +1,13 @@
+use egui_custom::util::shared::serde_shared;
 use egui_custom::util::common::serde_common;
-use egui_custom::prelude::Common;
+use egui_custom::prelude::{Common, Shared};
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Dipendente {
     pub nome: String,
-    #[serde(with = "serde_common")]
-    pub ferie: Common<Vec<String>>,
+    #[serde(with = "serde_shared")]
+    pub ferie: Shared<Vec<String>>,
 }
 
 impl Dipendente {

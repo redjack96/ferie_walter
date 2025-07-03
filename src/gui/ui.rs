@@ -35,7 +35,7 @@ use egui::{Button, ComboBox, Context, RichText}; // Componenti UI base da egui
 use egui_custom::griglia::GrigliaInterattiva; // Griglia interattiva personalizzata
 use egui_custom::griglia::cella::Cella; // Cella della griglia
 use egui_custom::griglia::posizione::Posizione; // Posizione testo nelle celle
-use egui_custom::prelude::{Commands, Common}; // Utility comuni
+use egui_custom::prelude::{Commands, Common, Shared}; // Utility comuni
 use serde::{Deserialize, Serialize}; // Serializzazione/deserializzazione JSON
 use std::fs; // File system per lettura/scrittura file JSON
 // AGGIUNTO PER GESTIONE DATE
@@ -51,7 +51,7 @@ pub struct FerieWalter {
     pub dipendenti: Vec<Dipendente>, // Lista di dipendenti gestiti
     pub festivita: Vec<String>,
     #[serde(skip)]
-    pub comandi: Common<Commands>, // Gestione comandi per undo/redo, non serializzata
+    pub comandi: Shared<Commands>, // Gestione comandi per undo/redo, non serializzata
 }
 
 impl Default for FerieWalter {
