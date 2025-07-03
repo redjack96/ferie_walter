@@ -1,6 +1,5 @@
+use egui_custom::prelude::Shared;
 use egui_custom::util::shared::serde_shared;
-use egui_custom::util::common::serde_common;
-use egui_custom::prelude::{Common, Shared};
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, Serialize, Deserialize)]
