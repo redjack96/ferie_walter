@@ -174,11 +174,14 @@ impl eframe::App for FerieWalter {
                 let testo_giorno = abbreviazioni[idx];
                 vett_header_giorni.push(format!("{testo_giorno}\n{giorno}"));
             }
-            vett_header_giorni.push("Tot".to_string());
-            let mut griglia = GrigliaInterattiva::new_with_header(
-                (1 + giorni_del_mese) as usize,
+            //creo l'header del conteggio ferie MESE + ANNO
+            vett_header_giorni.push("Tot\nMese".to_string());
+            vett_header_giorni.push("Tot\nAnno".to_string());
+
+            //crea un griglia che contiene l'header dei giorni
+            let mut griglia = GrigliaInterattiva::new_empty_with_header(
+                (2 + giorni_del_mese) as usize,
                 60.0,
-                vec![],
                 vett_header_giorni,
             ).header_verticale(self.dipendenti.iter().map(|d| d.nome.clone()).collect());
 
@@ -274,6 +277,20 @@ impl eframe::App for FerieWalter {
                 self.comandi.get_mut().execute_all();
 
                 let conta_ferie = dip.ferie.read().iter().count();
+                //
+                let conta_ferie_mese = dip.ferie.read().iter().filter(|data_ferie|{
+                    //filtriamo le date del mese corrente
+                    let data_ferie_result =
+                       NaiveDate::parse_from_str(&data_ferie, "%Y-%m-%d");
+                    if let Ok(ferie) = data_ferie_result {
+                        let mese_da_1 = ferie.month();
+                        if mese_da_1 == self.mese_selezionato.to_ordinal() {
+                            return true;
+                        }
+                    }
+                    false
+                }).count();
+                griglia = griglia.add_cella_semplice(&conta_ferie_mese.to_string());
                 griglia = griglia.add_cella_semplice(&conta_ferie.to_string());
             }
 
