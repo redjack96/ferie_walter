@@ -1,4 +1,4 @@
-use egui_custom::prelude::ExecutableCommand;
+use egui_custom::util::comandi::ExecutableCommand;
 use crate::entity::dipendenti::Dipendente;
 use strum::AsRefStr;
 

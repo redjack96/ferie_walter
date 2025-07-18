@@ -23,24 +23,40 @@
 */
 
 // 1. INIZIALIZZAZIONE UI
-use crate::FILE_JSON; // Percorso file JSON per salvare/caricare dati
-use crate::control::comandi::ComandoFerie; // Comandi personalizzati per gestione ferie
-use crate::control::date::get_giorni_nel_mese; // Funzione per ottenere numero giorni in un mese
-use crate::entity::anno::Anno; // Tipo Anno personalizzato
-use crate::entity::dipendenti::Dipendente; // Tipo Dipendente
-use crate::entity::mese::Mese; // Tipo Mese personalizzato
-use eframe::Frame; // Frame della GUI
-use eframe::epaint::Color32; // Colori per la UI
-use egui::{Button, ComboBox, Context, RichText}; // Componenti UI base da egui
-use egui_custom::griglia::GrigliaInterattiva; // Griglia interattiva personalizzata
-use egui_custom::griglia::cella::Cella; // Cella della griglia
-use egui_custom::griglia::posizione::Posizione; // Posizione testo nelle celle
-use egui_custom::prelude::{Commands, Shared}; // Utility comuni
-use serde::{Deserialize, Serialize}; // Serializzazione/deserializzazione JSON
-use std::fs; // File system per lettura/scrittura file JSON
-// AGGIUNTO PER GESTIONE DATE
-use chrono::{Datelike, NaiveDate, Weekday}; // Manipolazione date e giorni settimana
-use strum::IntoEnumIterator; // Iteratore per enum (Anno, Mese)
+#[cfg(not(target_arch = "wasm32"))]
+use crate::FILE_JSON;
+// Percorso file JSON per salvare/caricare dati
+
+use crate::control::comandi::ComandoFerie;
+// Comandi personalizzati per gestione ferie
+use crate::control::date::get_giorni_nel_mese;
+// Funzione per ottenere numero giorni in un mese
+use crate::entity::anno::Anno;
+// Tipo Anno personalizzato
+use crate::entity::dipendenti::Dipendente;
+// Tipo Dipendente
+use crate::entity::mese::Mese;
+// Tipo Mese personalizzato
+use eframe::{CreationContext, Frame};
+// Frame della GUI
+use eframe::epaint::Color32;
+// Colori per la UI
+use egui::{Button, ComboBox, Context, RichText};
+// Componenti UI base da egui
+use egui_custom::griglia::GrigliaInterattiva;
+// Griglia interattiva personalizzata
+use egui_custom::griglia::cella::Cella;
+// Cella della griglia
+use egui_custom::griglia::posizione::Posizione;
+// Posizione testo nelle celle
+use egui_custom::prelude::{Commands, Shared};
+// Utility comuni
+use serde::{Deserialize, Serialize};
+// File system per lettura/scrittura file JSON
+// Manipolazione date e giorni settimana
+use chrono::{Datelike, NaiveDate, Weekday};
+use strum::IntoEnumIterator;
+// Iteratore per enum (Anno, Mese)
 
 #[derive(Serialize, Deserialize)]
 pub struct FerieWalter {
@@ -52,6 +68,17 @@ pub struct FerieWalter {
     pub festivita: Vec<String>,
     #[serde(skip)]
     pub comandi: Shared<Commands>, // Gestione comandi per undo/redo, non serializzata
+}
+
+impl FerieWalter {
+    /// Carica lo stato della variabile dallo storage di egui
+    pub fn load(cc: &CreationContext) -> Self {
+        if let Some(storage) = cc.storage {
+            eframe::get_value(storage, eframe::APP_KEY).unwrap_or_default()
+        } else {
+            Default::default()
+        }
+    }
 }
 
 impl Default for FerieWalter {
@@ -100,18 +127,24 @@ impl eframe::App for FerieWalter {
 
                 // Bottone per caricare dati da file JSON
                 if ui.button(RichText::new("Carica").size(30.0)).clicked() {
-                    if let Some(contenuto) = fs::read_to_string(FILE_JSON).ok() {
+                    #[cfg(not(target_arch = "wasm32"))]
+                    if let Some(contenuto) = std::fs::read_to_string(FILE_JSON).ok() {
                         if let Ok(ferie) = serde_json::from_str(&contenuto) {
                             *self = ferie;
                         }
                     }
+                    // #[cfg(target_arch = "wasm32")]
+                    // TODO
                 }
 
                 // Bottone per salvare dati su file JSON
                 if ui.button(RichText::new("Salva").size(30.0)).clicked() {
+                    #[cfg(not(target_arch = "wasm32"))]
                     if let Ok(ferie_json) = serde_json::to_string_pretty(&self) {
-                        fs::write(FILE_JSON, ferie_json).ok();
+                        std::fs::write(FILE_JSON, ferie_json).ok();
                     }
+                    // #[cfg(target_arch = "wasm32")]
+                    // TODO
                 }
             });
 

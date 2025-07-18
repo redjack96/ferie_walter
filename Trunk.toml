@@ -1,0 +1,2 @@
+[build]
+filehash = false # Whether to include hash values in the output file names.
