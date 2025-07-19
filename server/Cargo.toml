@@ -4,3 +4,19 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+axum = "0.8.4"
+tokio = {  version = "^1.46", features = [
+    "rt",          # runtime base
+    "macros",      # macro come #[tokio::main]
+    "time",        # timer async
+    "net",         # networking async
+    "io-util",     # utilities io async
+    "io-std",      # std compatibilità I/O
+    "sync",        # async synchronization primitives
+    "mio",         # base I/O polling
+    "bytes",       # buffer management
+    "libc",        # syscalls di base
+    "socket2",     # socket basso livello per networking
+    "fs"           # file system
+] }
+serde = { version = "1.0.219", features = ["derive"] }
