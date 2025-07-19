@@ -4,7 +4,6 @@ mod control;
 mod entity;
 mod gui;
 
-use log::{error};
 use crate::gui::ui::FerieWalter;
 
 #[cfg(target_arch = "wasm32")]
@@ -30,7 +29,7 @@ fn main() {
         let ferie = match FerieWalter::load().await {
             Ok(ferie) => ferie,
             Err(e) => {
-                error!(
+                log::error!(
                     "Impossibile comunicare con il server. Esegui 'cargo run -p server': {}",
                     e.to_string()
                 );

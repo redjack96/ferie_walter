@@ -53,10 +53,9 @@ use egui_custom::griglia::posizione::Posizione;
 use egui_custom::griglia::GrigliaInterattiva;
 // Posizione testo nelle celle
 use egui_custom::prelude::{Commands, LoadingState, Shared};
-use gloo_net::http::Request;
 use log::info;
 // Utility comuni
-use crate::control::load::{DatiFerie, start_async_load};
+use crate::control::load::{DatiFerie};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 // Iteratore per enum (Anno, Mese)
@@ -91,9 +90,10 @@ impl Default for FerieWalter {
     }
 }
 
+#[cfg(target_arch = "wasm32")]
 impl FerieWalter {
     pub async fn load() -> Result<Self, Box<dyn std::error::Error>> {
-        let send_req = match Request::get("http://127.0.0.1:3000/getAll").send().await {
+        let send_req = match gloo_net::http::Request::get("http://127.0.0.1:3000/getAll").send().await {
             Ok(res) => res,
             Err(err) => return Err(Box::new(err)),
         };
@@ -182,7 +182,7 @@ impl eframe::App for FerieWalter {
                             info!("Cliccato Carica");
                             let loading_shared = self.loading.clone();
                             let result = self.loading_res.clone();
-                            start_async_load(loading_shared, result);
+                            crate::control::load::start_async_load(loading_shared, result);
                         }
                     }
 

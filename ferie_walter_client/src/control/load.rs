@@ -1,16 +1,13 @@
-use egui_custom::prelude::{LoadingState, Shared};
-use log::{error, info};
-use wasm_bindgen_futures::spawn_local;
 use crate::entity::dipendenti::Dipendente;
-use crate::gui::ui::FerieWalter;
 
 pub struct DatiFerie {
     pub dip: Vec<Dipendente>,
     pub fes: Vec<String>
 }
 
+#[cfg(target_arch = "wasm32")]
 impl DatiFerie {
-    pub fn load_from(f: FerieWalter) -> Self {
+    pub fn load_from(f: crate::gui::ui::FerieWalter) -> Self {
         let (dip, fes) = (f.dipendenti, f.festivita);
         Self {
             dip, fes
@@ -18,11 +15,15 @@ impl DatiFerie {
     }
 }
 
+#[cfg(target_arch = "wasm32")]
+use egui_custom::prelude::{LoadingState, Shared};
+#[cfg(target_arch = "wasm32")]
 pub fn start_async_load(mut shared_loading: Shared<LoadingState>, mut shared_res: Shared<Option<DatiFerie>>) {
     // Evita chiamate ripetute
     shared_loading.write(LoadingState::Loading);
-    spawn_local(async move {
-        match FerieWalter::load().await {
+    use log::{error, info};
+    wasm_bindgen_futures::spawn_local(async move {
+        match crate::FerieWalter::load().await {
             Ok(data) => {
                 info!("✅ Caricati con successo!");
                 shared_loading.write(LoadingState::Loaded);
