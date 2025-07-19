@@ -4,7 +4,7 @@ mod control;
 mod entity;
 mod gui;
 
-use log::{error, info, log};
+use log::{error};
 use crate::gui::ui::FerieWalter;
 
 #[cfg(target_arch = "wasm32")]

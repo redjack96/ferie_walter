@@ -43,7 +43,6 @@ use chrono::{Datelike, NaiveDate, Weekday};
 use eframe::epaint::Color32;
 // Tipo Mese personalizzato
 use eframe::Frame;
-use eframe::wasm_bindgen::JsValue;
 // Colori per la UI
 use egui::{Button, ComboBox, Context, RichText};
 // Griglia interattiva personalizzata
@@ -53,10 +52,11 @@ use egui_custom::griglia::posizione::Posizione;
 // Componenti UI base da egui
 use egui_custom::griglia::GrigliaInterattiva;
 // Posizione testo nelle celle
-use egui_custom::prelude::{Commands, Shared};
+use egui_custom::prelude::{Commands, LoadingState, Shared};
 use gloo_net::http::Request;
 use log::info;
 // Utility comuni
+use crate::control::load::{DatiFerie, start_async_load};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 // Iteratore per enum (Anno, Mese)
@@ -71,6 +71,10 @@ pub struct FerieWalter {
     pub festivita: Vec<String>,
     #[serde(skip)]
     pub comandi: Shared<Commands>, // Gestione comandi per undo/redo, non serializzata
+    #[serde(skip)]
+    pub loading: Shared<LoadingState>,
+    #[serde(skip)]
+    loading_res: Shared<Option<DatiFerie>>,
 }
 
 impl Default for FerieWalter {
@@ -81,6 +85,8 @@ impl Default for FerieWalter {
             dipendenti: vec![],
             festivita: vec!["2025-01-1".to_string()],
             comandi: Default::default(),
+            loading: Shared::new(LoadingState::Loaded),
+            loading_res: Shared::new(None),
         }
     }
 }
@@ -108,8 +114,12 @@ impl FerieWalter {
             Err(err) => return Err(Box::new(err)),
         };
 
-        let dipendenti = dipendenti.into_iter()
-            .map(|d| Dipendente {nome: d.nome, ferie: Shared::new(d.ferie)})
+        let dipendenti = dipendenti
+            .into_iter()
+            .map(|d| Dipendente {
+                nome: d.nome,
+                ferie: Shared::new(d.ferie),
+            })
             .collect();
 
         // let festivita = // todo richiamare api getFestivita
@@ -120,6 +130,8 @@ impl FerieWalter {
             dipendenti,
             festivita: vec![], // TODO: aggiungere api getFestivita
             comandi: Default::default(),
+            loading: Shared::new(LoadingState::Loaded),
+            loading_res: Shared::new(None),
         })
     }
 }
@@ -157,25 +169,44 @@ impl eframe::App for FerieWalter {
                 // 4. LETTURA/SCRITTURA DA/IN FILE
 
                 // Bottone per caricare dati da file JSON
-                if ui.button(RichText::new("Carica").size(30.0)).clicked() {
-                    #[cfg(not(target_arch = "wasm32"))]
-                    if let Some(contenuto) = std::fs::read_to_string(FILE_JSON).ok() {
-                        if let Ok(ferie) = serde_json::from_str(&contenuto) {
-                            *self = ferie;
+                ui.add_enabled_ui(self.loading.copy() != LoadingState::Loading, |ui| {
+                    if ui.button(RichText::new("Carica").size(30.0)).clicked() {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        if let Some(contenuto) = std::fs::read_to_string(FILE_JSON).ok() {
+                            if let Ok(ferie) = serde_json::from_str(&contenuto) {
+                                *self = ferie;
+                            }
+                        }
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            info!("Cliccato Carica");
+                            let loading_shared = self.loading.clone();
+                            let result = self.loading_res.clone();
+                            start_async_load(loading_shared, result);
                         }
                     }
-                    // #[cfg(target_arch = "wasm32")]
-                    // TODO
-                }
 
-                // Bottone per salvare dati su file JSON
-                if ui.button(RichText::new("Salva").size(30.0)).clicked() {
-                    #[cfg(not(target_arch = "wasm32"))]
-                    if let Ok(ferie_json) = serde_json::to_string_pretty(&self) {
-                        std::fs::write(FILE_JSON, ferie_json).ok();
+                    // Se il caricamento ha prodotto dei risultati, aggiorno self
+                    if let Some(data) = self.loading_res.take() {
+                        info!("Aggiorno i dati");
+                        self.dipendenti = data.dip;
+                        self.festivita = data.fes;
+                        self.loading.write(LoadingState::Loaded);
                     }
-                    // #[cfg(target_arch = "wasm32")]
-                    // TODO
+
+                    // Bottone per salvare dati su file JSON
+                    if ui.button(RichText::new("Salva").size(30.0)).clicked() {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        if let Ok(ferie_json) = serde_json::to_string_pretty(&self) {
+                            std::fs::write(FILE_JSON, ferie_json).ok();
+                        }
+                        // #[cfg(target_arch = "wasm32")]
+                        // TODO
+                    }
+                });
+
+                if self.loading.copy() == LoadingState::Loading {
+                    ui.spinner();
                 }
             });
 
