@@ -1,9 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod control;
 mod entity;
 mod gui;
-mod control;
 
+use log::{error, info, log};
 use crate::gui::ui::FerieWalter;
 
 #[cfg(target_arch = "wasm32")]
@@ -11,7 +12,7 @@ fn main() {
     use eframe::wasm_bindgen::JsCast as _;
 
     // Redirect `log` message to `console.log` and friends:
-    eframe::WebLogger::init(log::LevelFilter::Debug).ok();
+    // eframe::WebLogger::init(log::LevelFilter::Debug).ok();
 
     let web_options = eframe::WebOptions::default();
 
@@ -26,13 +27,19 @@ fn main() {
             .expect("Failed to find the_canvas_id")
             .dyn_into::<web_sys::HtmlCanvasElement>()
             .expect("the_canvas_id was not a HtmlCanvasElement");
+        let ferie = match FerieWalter::load().await {
+            Ok(ferie) => ferie,
+            Err(e) => {
+                error!(
+                    "Impossibile comunicare con il server. Esegui 'cargo run -p server': {}",
+                    e.to_string()
+                );
+                return;
+            }
+        };
 
         let start_result = eframe::WebRunner::new()
-            .start(
-                canvas,
-                web_options,
-                Box::new(|_| Ok(Box::new(FerieWalter::default()))),
-            )
+            .start(canvas, web_options, Box::new(|_| Ok(Box::new(ferie))))
             .await;
 
         // Remove the loading text and spinner:

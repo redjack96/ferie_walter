@@ -43,6 +43,7 @@ use chrono::{Datelike, NaiveDate, Weekday};
 use eframe::epaint::Color32;
 // Tipo Mese personalizzato
 use eframe::Frame;
+use eframe::wasm_bindgen::JsValue;
 // Colori per la UI
 use egui::{Button, ComboBox, Context, RichText};
 // Griglia interattiva personalizzata
@@ -53,6 +54,8 @@ use egui_custom::griglia::posizione::Posizione;
 use egui_custom::griglia::GrigliaInterattiva;
 // Posizione testo nelle celle
 use egui_custom::prelude::{Commands, Shared};
+use gloo_net::http::Request;
+use log::info;
 // Utility comuni
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
@@ -79,6 +82,45 @@ impl Default for FerieWalter {
             festivita: vec!["2025-01-1".to_string()],
             comandi: Default::default(),
         }
+    }
+}
+
+impl FerieWalter {
+    pub async fn load() -> Result<Self, Box<dyn std::error::Error>> {
+        let send_req = match Request::get("http://127.0.0.1:3000/getAll").send().await {
+            Ok(res) => res,
+            Err(err) => return Err(Box::new(err)),
+        };
+
+        let res = match send_req.text().await {
+            Ok(res) => res,
+            Err(err) => return Err(Box::new(err)),
+        };
+
+        #[derive(Debug, Serialize, Deserialize)]
+        pub struct DipendenteJson {
+            pub nome: String,
+            pub ferie: Vec<String>,
+        }
+        info!("Recupero i dipendenti dal server!");
+        let dipendenti = match serde_json::from_str::<Vec<DipendenteJson>>(&res) {
+            Ok(dip) => dip,
+            Err(err) => return Err(Box::new(err)),
+        };
+
+        let dipendenti = dipendenti.into_iter()
+            .map(|d| Dipendente {nome: d.nome, ferie: Shared::new(d.ferie)})
+            .collect();
+
+        // let festivita = // todo richiamare api getFestivita
+
+        Ok(Self {
+            anno_selezionato: Default::default(),
+            mese_selezionato: Default::default(),
+            dipendenti,
+            festivita: vec![], // TODO: aggiungere api getFestivita
+            comandi: Default::default(),
+        })
     }
 }
 
@@ -205,14 +247,14 @@ impl eframe::App for FerieWalter {
                 (2 + giorni_del_mese) as usize,
                 60.0,
                 vett_header_giorni,
-            ).header_verticale(self.dipendenti.iter().map(|d| d.nome.clone()).collect());
+            )
+            .header_verticale(self.dipendenti.iter().map(|d| d.nome.clone()).collect());
 
             // Riga di separazione vuota dopo giorni settimana
             // griglia = griglia.add_cella(Cella::from_testo(""));
 
             // Per ogni dipendente aggiunge una riga con il nome e i giorni
             for dip in self.dipendenti.iter() {
-
                 for giorno in 1..=giorni_del_mese {
                     // Creo una stringa data nel formato "YYYY-MM-DD" usando anno, mese e giorno corrente
                     let data_string = format!(
@@ -294,24 +336,27 @@ impl eframe::App for FerieWalter {
                     // Aggiungo la cella creata alla griglia della UI
                     griglia = griglia.add_cella(cella);
                 }
-                
-                
+
                 self.comandi.get_mut().execute_all();
 
                 let conta_ferie = dip.ferie.read().iter().count();
                 //
-                let conta_ferie_mese = dip.ferie.read().iter().filter(|data_ferie|{
-                    //filtriamo le date del mese corrente
-                    let data_ferie_result =
-                       NaiveDate::parse_from_str(&data_ferie, "%Y-%m-%d");
-                    if let Ok(ferie) = data_ferie_result {
-                        let mese_da_1 = ferie.month();
-                        if mese_da_1 == self.mese_selezionato.to_ordinal() {
-                            return true;
+                let conta_ferie_mese = dip
+                    .ferie
+                    .read()
+                    .iter()
+                    .filter(|data_ferie| {
+                        //filtriamo le date del mese corrente
+                        let data_ferie_result = NaiveDate::parse_from_str(&data_ferie, "%Y-%m-%d");
+                        if let Ok(ferie) = data_ferie_result {
+                            let mese_da_1 = ferie.month();
+                            if mese_da_1 == self.mese_selezionato.to_ordinal() {
+                                return true;
+                            }
                         }
-                    }
-                    false
-                }).count();
+                        false
+                    })
+                    .count();
                 griglia = griglia.add_cella_semplice(&conta_ferie_mese.to_string());
                 griglia = griglia.add_cella_semplice(&conta_ferie.to_string());
             }
