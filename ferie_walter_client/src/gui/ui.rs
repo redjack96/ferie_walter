@@ -36,25 +36,25 @@ use crate::entity::anno::Anno;
 use crate::entity::dipendenti::Dipendente;
 // Tipo Dipendente
 use crate::entity::mese::Mese;
-// Tipo Mese personalizzato
-use eframe::{CreationContext, Frame};
+// File system per lettura/scrittura file JSON
+// Manipolazione date e giorni settimana
+use chrono::{Datelike, NaiveDate, Weekday};
 // Frame della GUI
 use eframe::epaint::Color32;
+// Tipo Mese personalizzato
+use eframe::Frame;
 // Colori per la UI
 use egui::{Button, ComboBox, Context, RichText};
-// Componenti UI base da egui
-use egui_custom::griglia::GrigliaInterattiva;
 // Griglia interattiva personalizzata
 use egui_custom::griglia::cella::Cella;
 // Cella della griglia
 use egui_custom::griglia::posizione::Posizione;
+// Componenti UI base da egui
+use egui_custom::griglia::GrigliaInterattiva;
 // Posizione testo nelle celle
 use egui_custom::prelude::{Commands, Shared};
 // Utility comuni
 use serde::{Deserialize, Serialize};
-// File system per lettura/scrittura file JSON
-// Manipolazione date e giorni settimana
-use chrono::{Datelike, NaiveDate, Weekday};
 use strum::IntoEnumIterator;
 // Iteratore per enum (Anno, Mese)
 
@@ -68,17 +68,6 @@ pub struct FerieWalter {
     pub festivita: Vec<String>,
     #[serde(skip)]
     pub comandi: Shared<Commands>, // Gestione comandi per undo/redo, non serializzata
-}
-
-impl FerieWalter {
-    /// Carica lo stato della variabile dallo storage di egui
-    pub fn load(cc: &CreationContext) -> Self {
-        if let Some(storage) = cc.storage {
-            eframe::get_value(storage, eframe::APP_KEY).unwrap_or_default()
-        } else {
-            Default::default()
-        }
-    }
 }
 
 impl Default for FerieWalter {

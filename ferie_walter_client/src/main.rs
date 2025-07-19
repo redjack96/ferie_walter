@@ -31,7 +31,7 @@ fn main() {
             .start(
                 canvas,
                 web_options,
-                Box::new(|cc| Ok(Box::new(FerieWalter::load(cc)))),
+                Box::new(|_| Ok(Box::new(FerieWalter::default()))),
             )
             .await;
 
