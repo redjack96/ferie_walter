@@ -1,0 +1,26 @@
+[package]
+name = "ferie_walter"
+version = "0.1.0"
+edition = "2024"
+authors = ["giacomo.redjack@gmail.com", "icivixwalter@gmail.com"]
+
+[dependencies]
+eframe = { workspace = true, features = ["persistence"] }
+egui.workspace = true
+egui_extras.workspace = true
+egui_custom = { workspace = true, features = ["serde"] }
+# egui_custom = {workspace = true, features = ["serde"]}
+log = "^0.4"
+strum = { version = "0.27.1", features = ["derive"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+chrono = "0.4.41"
+parking_lot = "0.12.4"
+
+# Dipendenza condizionale, solo per il target wasm32
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "^0.4"
+web-sys = "^0.3"
+
+# Dipendenza quando compili nativamente
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]

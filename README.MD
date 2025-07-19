@@ -9,7 +9,7 @@ cargo run
 Per avviare sul browser (dalla cartella che contiene Cargo.toml):
 
 ```sh
-trunk serve
+trunk serve --config ferie_walter/Trunk.toml
 ```
 
 E poi clicca sul link.
