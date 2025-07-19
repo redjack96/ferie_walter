@@ -7,7 +7,12 @@ cargo run
 ```
 
 Per avviare sul browser (dalla cartella che contiene Cargo.toml):
-
+La prima volta:
+```sh
+rustup target add wasm32-unknown-unknown
+cargo install cargo-binstall
+cargo binstall trunk
+```
 ```sh
 trunk serve --config ferie_walter_client/Trunk.toml
 ```
