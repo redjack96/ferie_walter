@@ -13,6 +13,9 @@ cargo install cargo-binstall
 cargo binstall trunk
 ```
 Per avviare il server esegui il comando dalla cartella root:
+1) attiva run - p server
+2) attiva trunk serve ....
+
 ```sh
 cargo run -p server
 ```
